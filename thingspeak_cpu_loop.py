@@ -10,7 +10,7 @@ def doit(channel):
     mem_avail_mb = psutil.avail_phymem()/1000000
 
     try:
-        response = channel.update(cpu_pc, mem_avail_mb)
+        response = channel.update([cpu_pc, mem_avail_mb])
         print cpu_pc
         print mem_avail_mb
         print strftime("%a, %d %b %Y %H:%M:%S", localtime())
