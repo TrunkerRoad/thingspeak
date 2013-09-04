@@ -10,8 +10,11 @@ class TooManyFields(ValueError):
     pass
 
 class channel(object):
-    def __init__(self, key):
-        self.key = key
+    def __init__(self, write_key):
+        """write_key is the Write API Key.
+        This function will likely take more arguments when we support reading as well
+        as writing."""
+        self.write_key = write_key
 
     def update(self, field_vals, lat=None, long=None, elevation=None, status=None):
         if len(vals) > 8:
@@ -19,7 +22,7 @@ class channel(object):
         # this verbosity, rather than just using kwargs,
         # so that callers get a prompt error if they supply an arg `update` cannot handle
         named_args = non_null_values(lat=lat, long=long, elevation=elevation, status=status)
-        params = urllib.urlencode(zip(field_keys, vals) + [('key', self.key)] + named_args)
+        params = urllib.urlencode(zip(field_keys, vals) + [('key', self.write_key)] + named_args)
         conn = httplib.HTTPConnection("api.thingspeak.com:80")
         conn.request("POST", "/update", params, headers)
         response = conn.getresponse()
