@@ -10,10 +10,9 @@ class TooManyFields(ValueError):
     pass
 
 class channel(object):
-    def __init__(self, write_key):
+    def __init__(self, write_key, cid):
         """write_key is the Write API Key.
-        This function will likely take more arguments when we support reading as well
-        as writing."""
+        cid is the read_key"""
         self.write_key = write_key
 
     def update(self, field_vals, lat=None, long=None, elevation=None, status=None):
@@ -27,4 +26,12 @@ class channel(object):
         conn.request("POST", "/update", params, headers)
         response = conn.getresponse()
         conn.close()
+        return response
+
+    def fetch(self, format):
+        conn = httplib.HTTPConnection("anpi.thingspeak.com:80")
+        path = "/channels/{0}/feed.{1}".format(self.cid, format)
+        params = urllib.urlencode([('key',self.key)])
+        conn.request("GET", path, params, headers)
+        response = conn.getresponse()
         return response
