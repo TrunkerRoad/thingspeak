@@ -1,5 +1,7 @@
 import httplib, urllib
 
+__version__ = '0.1.1'
+
 field_keys = ['field' + str(n) for n in xrange(1,9)]
 headers = {"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain"}
 
