@@ -18,12 +18,12 @@ class channel(object):
         self.write_key = write_key
 
     def update(self, field_vals, lat=None, long=None, elevation=None, status=None):
-        if len(vals) > 8:
+        if len(field_vals) > 8:
             raise TooManyFields('update can only handle 8 field values per channel')
         # this verbosity, rather than just using kwargs,
         # so that callers get a prompt error if they supply an arg `update` cannot handle
         named_args = non_null_values(lat=lat, long=long, elevation=elevation, status=status)
-        params = urllib.urlencode(zip(field_keys, vals) + [('key', self.write_key)] + named_args)
+        params = urllib.urlencode(zip(field_keys, field_vals) + [('key', self.write_key)] + named_args)
         conn = httplib.HTTPConnection("api.thingspeak.com:80")
         conn.request("POST", "/update", params, headers)
         response = conn.getresponse()
